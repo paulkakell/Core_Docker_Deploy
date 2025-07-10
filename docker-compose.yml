@@ -14,8 +14,8 @@ Services:
     env_file:
       - stack.env
     environment:
-      - PUID: ${BOOKSTACK-PUID}
-      - PGID: ${BOOKSTACK-PGID}
+      - PUID: ${BOOKSTACK_PUID}
+      - PGID: ${BOOKSTACK_PGID}
       - TZ=America/Denver
       - APP_URL=https://${BOOKSTACK_DOMAIN}
       - APP_KEY=${BOOKSTACK_APP_KEY}
@@ -29,7 +29,7 @@ Services:
       - 3004:80
     restart: unless-stopped
     volumes: 
-      - ${volumeroot}/core/bookstack/app:/config:rw
+      - ${VOLUMEROOT}/core/bookstack/app:/config:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
       
   core-bookstack-db: # Project Documentation Frontend
@@ -51,7 +51,7 @@ Services:
       - MYSQL_PASSWORD=${DB_PASSWORD}
     restart: unless-stopped
     volumes:
-      - ${volumeroot}/core/bookstack/db/mariadb:/var/lib/mysql:rw
+      - ${VOLUMEROOT}/core/bookstack/db/mariadb:/var/lib/mysql:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
   core-docker-socket-proxy:
     image: linuxserver/docker-socket-proxy:latest
@@ -71,7 +71,7 @@ Services:
       - '2375:2375'  # exposes proxy on host port 2375
     restart: unless-stopped
     volumes:
-      - ${volumeroot}/core/docker-socket-proxy/config:/config:rw
+      - ${VOLUMEROOT}/core/docker-socket-proxy/config:/config:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
   core-filebrowser:
@@ -79,8 +79,8 @@ Services:
     container_name: core-filebrowser
     hostname: core-filebrowser
     environment:
-      - PUID: ${FILEBROWSER-PUID}
-      - PGID: ${FILEBROWSER-PGID}
+      - PUID: ${FILEBROWSER_PUID}
+      - PGID: ${FILEBROWSER_PGID}
     ports:
       - 3001:80
     restart: unless-stopped
@@ -122,9 +122,9 @@ Services:
       - ${DNS3}
       - ${DNS4}
     environment:
-      - PUID: ${HOMEPAGE-PUID}
-      - PGID: ${HOMEPAGE-PGID}
-      - HOMEPAGE_ALLOWED_HOSTS=${HomepageFQDNs}
+      - PUID: ${HOMEPAGE_PUID}
+      - PGID: ${HOMEPAGE_PGID}
+      - HOMEPAGE_ALLOWED_HOSTS=${HOMEPAGEFQDNS}
       - TZ=America/Denver
     network_mode: "bridge"
     ports:
@@ -147,8 +147,8 @@ Services:
     ports:
       - 9001:9001
     environment:
-      - PUID: ${PORTAINERAGENT-PUID}
-      - PGID: ${PORTAINERAGENT-PGID}
+      - PUID: ${PORTAINERAGENT_PUID}
+      - PGID: ${PORTAINERAGENT_PGID}
       - TZ=America/Denver
     restart: unless-stopped
     volumes:
@@ -169,6 +169,6 @@ Services:
     environment:
       - ROOT_PASSWORD=${WEBMINPASSWORD}
     volumes:
-      - ${VOLUMEROOT}/webmin:/etc/webmin
+      - ${VOLUMEROOT}/core/webmin:/etc/webmin
       - /var/run/docker.sock:/var/run/docker.sock:ro 
     restart: unless-stopped
